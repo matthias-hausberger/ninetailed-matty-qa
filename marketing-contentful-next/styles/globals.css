@@ -6,9 +6,29 @@ html {
   min-height: 100%;
   display: flex;
 }
-body, #__next {
-    display: flex;
+body,
+#__next {
+  display: flex;
 }
-body, #__next, .app {
-    flex-grow: 1;
+body,
+#__next,
+.app {
+  flex-grow: 1;
+}
+
+@layer components {
+  .gradient-border {
+    background: linear-gradient(90deg, #ff248d, #210066);
+    background-size: 200% 200%;
+    animation: gr 5s ease-in-out alternate infinite;
+  }
+
+  @keyframes gr {
+    0% {
+      background-position: 70% 30%;
+    }
+    100% {
+      background-position: 0 100%;
+    }
+  }
 }

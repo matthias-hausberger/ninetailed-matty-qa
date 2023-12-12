@@ -114,6 +114,8 @@ export interface ICtaFields {
 
   /** Ninetailed */
   nt_experiences?: INtExperience[] | undefined;
+
+  isAIGenerated?: boolean | undefined;
 }
 
 export interface ICta extends Entry<ICtaFields> {
