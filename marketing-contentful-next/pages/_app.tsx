@@ -66,37 +66,6 @@ const B2BDemoApp = ({ Component, pageProps }: AppProps<CustomPageProps>) => {
             : []),
           ...(pageProps.ninetailed?.preview
             ? [
-                new NinetailedPreviewPlugin({
-                  experiences:
-                    pageProps.ninetailed?.preview.allExperiences || [],
-                  audiences: pageProps.ninetailed?.preview.allAudiences || [],
-                  onOpenExperienceEditor: (experience) => {
-                    if (process.env.NEXT_PUBLIC_CONTENTFUL_SPACE_ID) {
-                      window.open(
-                        `https://app.contentful.com/spaces/${
-                          process.env.NEXT_PUBLIC_CONTENTFUL_SPACE_ID
-                        }/environments/${
-                          process.env.NEXT_PUBLIC_CONTENTFUL_ENVIRONMENT ||
-                          'master'
-                        }/entries/${experience.id}`,
-                        '_blank'
-                      );
-                    }
-                  },
-                  onOpenAudienceEditor: (audience) => {
-                    if (process.env.NEXT_PUBLIC_CONTENTFUL_SPACE_ID) {
-                      window.open(
-                        `https://app.contentful.com/spaces/${
-                          process.env.NEXT_PUBLIC_CONTENTFUL_SPACE_ID
-                        }/environments/${
-                          process.env.NEXT_PUBLIC_CONTENTFUL_ENVIRONMENT ||
-                          'master'
-                        }/entries/${audience.id}`,
-                        '_blank'
-                      );
-                    }
-                  },
-                }),
               ]
             : []),
         ]}
