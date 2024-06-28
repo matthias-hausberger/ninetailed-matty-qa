@@ -63,11 +63,7 @@ const B2BDemoApp = ({ Component, pageProps }: AppProps<CustomPageProps>) => {
                   },
                 }),
               ]
-            : []),
-          ...(pageProps.ninetailed?.preview
-            ? [
-              ]
-            : []),
+            : [])
         ]}
         clientId={process.env.NEXT_PUBLIC_NINETAILED_CLIENT_ID ?? ''}
         environment={process.env.NEXT_PUBLIC_NINETAILED_ENVIRONMENT ?? 'main'}
