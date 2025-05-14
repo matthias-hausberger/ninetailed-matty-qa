@@ -6,22 +6,44 @@ import { ContentfulImageLoader } from '@/lib/helperfunctions';
 
 import { ContentfulLivePreview } from '@contentful/live-preview';
 import classNames from 'classnames';
-import { useFlag } from '@/lib/experiences';
+import { useFlag } from '@ninetailed/experience.js-next';
 import type { TypeHeroWithoutUnresolvableLinksResponse } from '@/types/TypeHero';
+import exp from 'constants';
+
+type LayoutStyle = {
+  direction: string;
+  transform: string;
+  blockTransform: string;
+  svgHidden: boolean;
+};
+
+type Something = {
+  a: 'a' | 'b';
+};
+
+function returnSomething<T>(input: T) {
+  return {
+    someWrapper: input,
+  };
+}
 
 export const Hero = (hero: TypeHeroWithoutUnresolvableLinksResponse) => {
-  const expFlag = useFlag('heroLayout') || 0;
-
-  const layoutStyles = [
-    {
-      direction: 'xl:flex-row',
+  const { value } = useFlag<string>(
+    'heroLayoutString',
+    JSON.stringify({
+      direction: 'xl:flex-row default',
       transform: '',
-    },
-    {
-      direction: 'xl:flex-row-reverse',
-      transform: 'xl:-scale-x-100',
-    },
-  ];
+      blockTransform: 'bg-indigo-200 w-screen',
+      svgHidden: false,
+    })
+  );
+
+  const foo = returnSomething({
+    a: 'a',
+  } as Something);
+
+  const expFlag = JSON.parse(value);
+
   return (
     <div className="bg-white xl:pb-12 hero">
       <div className="pt-8 sm:pt-12 xl:relative xl:py-6">
@@ -29,7 +51,7 @@ export const Hero = (hero: TypeHeroWithoutUnresolvableLinksResponse) => {
         <div
           className={classNames(
             'mx-auto max-w-md px-4 sm:max-w-3xl md:px-8 xl:max-w-7xl flex flex-col items-center xl:gap-24',
-            layoutStyles[expFlag].direction
+            expFlag.direction
           )}
         >
           <div className="xl:mt-20 xl:w-1/2">
@@ -44,6 +66,7 @@ export const Hero = (hero: TypeHeroWithoutUnresolvableLinksResponse) => {
                 )}
                 richTextDocument={hero.fields.headline}
               />
+              content: {expFlag.direction}
               <RichText
                 {...ContentfulLivePreview.getProps({
                   entryId: hero.sys.id,
@@ -85,25 +108,20 @@ export const Hero = (hero: TypeHeroWithoutUnresolvableLinksResponse) => {
           <div
             className={classNames(
               'py-12 sm:relative sm:mt-12 sm:pt-16 xl:inset-y-0 xl:right-0 xl:w-1/2',
-              layoutStyles[expFlag].transform
+              expFlag.transform
             )}
           >
             <div className="hidden sm:block">
               <div
                 className={classNames(
                   'absolute inset-y-0 left-1/2  rounded-l-3xl xl:left-80 xl:right-0',
-                  {
-                    'bg-indigo-200 w-screen': expFlag === 0,
-                  },
-                  {
-                    'bg-amber-200 blur-2xl m-20 w-full': expFlag === 1,
-                  }
+                  expFlag.blockTransform
                 )}
               />
               <svg
                 className={classNames(
                   'absolute top-8 right-1/2 -mr-3 xl:m-0 xl:left-0',
-                  { hidden: expFlag === 1 }
+                  { hidden: expFlag.svgHidden }
                 )}
                 width={404}
                 height={392}
@@ -138,7 +156,7 @@ export const Hero = (hero: TypeHeroWithoutUnresolvableLinksResponse) => {
               <div
                 className={classNames(
                   'absolute w-[440px] h-[440px] rounded-full bg-gradient-to-br from-indigo-600 to-indigo-100 bg-blend-normal blur-2xl',
-                  { hidden: expFlag === 0 }
+                  { hidden: expFlag.svgHidden }
                 )}
               />
             </div>
