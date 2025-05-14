@@ -38,6 +38,13 @@ export const Hero = (hero: TypeHeroWithoutUnresolvableLinksResponse) => {
     })
   );
 
+  /*const { value: valueJSON } = useFlag<any>('heroLayout', {
+    direction: 'xl:flex-row default',
+    transform: '',
+    blockTransform: 'bg-indigo-200 w-screen',
+    svgHidden: false,
+  });*/
+
   const foo = returnSomething({
     a: 'a',
   } as Something);
