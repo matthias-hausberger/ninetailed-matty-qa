@@ -84,14 +84,6 @@ export const Button: React.FC<ButtonProps> = React.forwardRef(
     const variantClassNames =
       variantValue && typeof variantValue === 'string' ? variantValue : '';
 
-    console.log("Variant map from flag 'buttonColors':", variantMap);
-
-    /*let variantMap = {
-      primary: 'bg-indigo-600 text-white',
-      secondary: 'bg-indigo-100 text-indigo-700',
-      loud: 'bg-amber-600 text-white',
-    };*/
-
     const { track, identify } = useNinetailed();
 
     const trackButtonClick = handleErrors(async (e: Event) => {
