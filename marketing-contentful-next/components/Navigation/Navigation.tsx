@@ -35,10 +35,12 @@ export function Navigation(
   const [loggingIn, setLoggingIn] = useState<boolean>(false);
   const { identify } = useNinetailed();
 
-  const { value: signInButtonText } = useFlag<string>(
+  const { value, error: signInButtonError } = useFlag<string>(
     'signInButtonText',
     'Sign Up'
   );
+  //trying to fix that there might be an error, but there is none?
+  const signInButtonText = signInButtonError ? 'Sign Up' : value;
 
   const handleLogin = handleErrors(async () => {
     setLoggingIn(true);
