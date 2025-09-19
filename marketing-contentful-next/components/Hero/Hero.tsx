@@ -10,46 +10,28 @@ import { useFlag } from '@ninetailed/experience.js-next';
 import type { TypeHeroWithoutUnresolvableLinksResponse } from '@/types/TypeHero';
 import exp from 'constants';
 
-type LayoutStyle = {
-  direction: string;
-  transform: string;
-  blockTransform: string;
-  svgHidden: boolean;
-};
-
-type Something = {
-  a: 'a' | 'b';
-};
-
-function returnSomething<T>(input: T) {
-  return {
-    someWrapper: input,
-  };
-}
-
 export const Hero = (hero: TypeHeroWithoutUnresolvableLinksResponse) => {
-  const { value } = useFlag<string>(
-    'heroLayoutString',
-    JSON.stringify({
-      direction: 'xl:flex-row default',
-      transform: '',
-      blockTransform: 'bg-indigo-200 w-screen',
+  const { value } = useFlag<boolean>('alternateHeroLayout', false, {
+    shouldAutoTrack: true,
+  });
+
+  console.log('Flag value for alternateHeroLayout:', value);
+
+  if (value == true) {
+    var expFlag = {
+      direction: 'xl:flex-row-reverse',
+      transform: 'xl:-translate-x-24',
+      blockTransform: 'xl:-translate-x-24',
+      svgHidden: true,
+    };
+  } else {
+    var expFlag = {
+      direction: 'xl:flex-row',
+      transform: 'xl:translate-x-24',
+      blockTransform: 'xl:translate-x-24',
       svgHidden: false,
-    })
-  );
-
-  /*const { value: valueJSON } = useFlag<any>('heroLayout', {
-    direction: 'xl:flex-row default',
-    transform: '',
-    blockTransform: 'bg-indigo-200 w-screen',
-    svgHidden: false,
-  });*/
-
-  const foo = returnSomething({
-    a: 'a',
-  } as Something);
-
-  const expFlag = JSON.parse(value);
+    };
+  }
 
   return (
     <div className="bg-white xl:pb-12 hero">
