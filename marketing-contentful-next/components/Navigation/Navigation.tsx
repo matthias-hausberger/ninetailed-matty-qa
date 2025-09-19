@@ -39,6 +39,7 @@ export function Navigation(
     'signInButtonText',
     'Sign Up'
   );
+  console.log('button text value', value);
   //trying to fix that there might be an error, but there is none?
   const signInButtonText = signInButtonError ? 'Sign Up' : value;
 
