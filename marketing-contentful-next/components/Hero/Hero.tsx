@@ -8,28 +8,21 @@ import { ContentfulLivePreview } from '@contentful/live-preview';
 import classNames from 'classnames';
 import { useFlag } from '@ninetailed/experience.js-next';
 import type { TypeHeroWithoutUnresolvableLinksResponse } from '@/types/TypeHero';
-import exp from 'constants';
 
 export const Hero = (hero: TypeHeroWithoutUnresolvableLinksResponse) => {
   const { value } = useFlag<boolean>('alternateHeroLayout', false, {
-    shouldAutoTrack: true,
+    shouldAutoTrack: false,
   });
 
-  console.log('Flag value for alternateHeroLayout:', value);
+  let expFlag = {
+    direction: 'xl:flex-row',
+    transform: '',
+  };
 
-  if (value == true) {
-    var expFlag = {
+  if (value === true) {
+    expFlag = {
       direction: 'xl:flex-row-reverse',
-      transform: 'xl:-translate-x-24',
-      blockTransform: 'xl:-translate-x-24',
-      svgHidden: true,
-    };
-  } else {
-    var expFlag = {
-      direction: 'xl:flex-row',
-      transform: 'xl:translate-x-24',
-      blockTransform: 'xl:translate-x-24',
-      svgHidden: false,
+      transform: 'xl:-scale-x-100',
     };
   }
 
@@ -55,7 +48,6 @@ export const Hero = (hero: TypeHeroWithoutUnresolvableLinksResponse) => {
                 )}
                 richTextDocument={hero.fields.headline}
               />
-              content: {expFlag.direction}
               <RichText
                 {...ContentfulLivePreview.getProps({
                   entryId: hero.sys.id,
@@ -103,14 +95,12 @@ export const Hero = (hero: TypeHeroWithoutUnresolvableLinksResponse) => {
             <div className="hidden sm:block">
               <div
                 className={classNames(
-                  'absolute inset-y-0 left-1/2  rounded-l-3xl xl:left-80 xl:right-0',
-                  expFlag.blockTransform
+                  'absolute inset-y-0 left-1/2  rounded-l-3xl xl:left-80 xl:right-0'
                 )}
               />
               <svg
                 className={classNames(
-                  'absolute top-8 right-1/2 -mr-3 xl:m-0 xl:left-0',
-                  { hidden: expFlag.svgHidden }
+                  'absolute top-8 right-1/2 -mr-3 xl:m-0 xl:left-0'
                 )}
                 width={404}
                 height={392}
@@ -144,8 +134,7 @@ export const Hero = (hero: TypeHeroWithoutUnresolvableLinksResponse) => {
               </svg>
               <div
                 className={classNames(
-                  'absolute w-[440px] h-[440px] rounded-full bg-gradient-to-br from-indigo-600 to-indigo-100 bg-blend-normal blur-2xl',
-                  { hidden: expFlag.svgHidden }
+                  'absolute w-[440px] h-[440px] rounded-full bg-gradient-to-br from-indigo-600 to-indigo-100 bg-blend-normal blur-2xl'
                 )}
               />
             </div>

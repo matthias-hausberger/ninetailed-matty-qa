@@ -21,6 +21,7 @@ import classNames from 'classnames';
 import { useNinetailed } from '@ninetailed/experience.js-next';
 import { handleErrors } from '@/lib/helperfunctions';
 import Link from 'next/link';
+import { useFlag } from '@ninetailed/experience.js-next';
 
 import type { TypeNavigationWithoutUnresolvableLinksResponse } from '@/types/TypeNavigation';
 import { ContentfulLivePreview } from '@contentful/live-preview';
@@ -33,6 +34,11 @@ export function Navigation(
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [loggingIn, setLoggingIn] = useState<boolean>(false);
   const { identify } = useNinetailed();
+
+  const { value: signInButtonText } = useFlag<string>(
+    'signInButtonText',
+    'Sign Up'
+  );
 
   const handleLogin = handleErrors(async () => {
     setLoggingIn(true);
@@ -184,7 +190,7 @@ export function Navigation(
             )}
             disabled={loggingIn}
           >
-            Log in <span aria-hidden="true">&rarr;</span>
+            {signInButtonText} <span aria-hidden="true">&rarr;</span>
           </button>
         </div>
       </nav>
@@ -295,7 +301,7 @@ export function Navigation(
                   )}
                   disabled={loggingIn}
                 >
-                  Log in
+                  {signInButtonText} <span aria-hidden="true">&rarr;</span>
                 </button>
               </div>
             </div>
