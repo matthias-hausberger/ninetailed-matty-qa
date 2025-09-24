@@ -1,4 +1,5 @@
 import React from 'react';
+import { z } from 'zod';
 
 import { handleErrors } from '@/lib/helperfunctions';
 import { useNinetailed } from '@ninetailed/experience.js-next';
@@ -60,19 +61,38 @@ export const Button: React.FC<ButtonProps> = React.forwardRef(
      *
      * Backwards compatibility: If a variant value is still a string we will treat it as a (legacy) class list and append it.
      */
-    type VariantStyle = { backgroundColor?: string; color?: string };
-    type VariantValue = string | VariantStyle;
-    type VariantFlagMap = Record<string, VariantValue>;
 
-    const defaultVariantMap: VariantFlagMap = {
+    // Zod schema for runtime validation
+    const ButtonStyleSchema = z.object({
+      backgroundColor: z.string().regex(/^#[0-9a-f]{6}$/i),
+      color: z.string().regex(/^#[0-9a-f]{6}$/i),
+    });
+    const ButtonMapSchema = z.object({
+      primary: ButtonStyleSchema,
+      secondary: ButtonStyleSchema,
+      loud: ButtonStyleSchema,
+    });
+    type ButtonMap = z.infer<typeof ButtonMapSchema>;
+
+    const defaultButtonMap: ButtonMap = {
       primary: { backgroundColor: '#4f46e5', color: '#ffffff' },
       secondary: { backgroundColor: '#e0e7ff', color: '#4338ca' },
       loud: { backgroundColor: '#d97706', color: '#ffffff' },
     };
 
-    const { value: variantMap } = useFlag('buttonColors', defaultVariantMap, {
-      shouldAutoTrack: false,
-    }) as { value: VariantFlagMap };
+    const { value: rawButtonMapValue } = useFlag<ButtonMap>(
+      'buttonColors',
+      defaultButtonMap,
+      {
+        shouldAutoTrack: false,
+      }
+    );
+
+    // Validate the variant map and fall back to default if invalid
+    const validationResult = ButtonMapSchema.safeParse(rawButtonMapValue);
+    const variantMap: ButtonMap = validationResult.success
+      ? validationResult.data
+      : defaultButtonMap;
 
     const variantValue = variantMap?.[variant];
     const variantInlineStyle: React.CSSProperties | undefined =
